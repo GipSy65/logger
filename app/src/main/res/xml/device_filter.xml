@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- This is a generic filter that will match most USB-Serial adapters -->
+    <!-- You may need to adjust vendor/product IDs based on your specific CAN device -->
+    <usb-device vendor-id="1027" product-id="24577" /> <!-- FTDI -->
+    <usb-device vendor-id="9025" /> <!-- CH340/CH341 -->
+    <usb-device vendor-id="4292" /> <!-- CP210x -->
+    <usb-device vendor-id="6790" product-id="21795" /> <!-- Prolific -->
+</resources>
