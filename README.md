@@ -19,7 +19,8 @@ The collected data is saved in a CSV format for research and analysis purposes.
 
 1. **Clone the repository**: 
    Open your terminal and run the following command to clone the repository:
-   ```bash git clone https://github.com/Ashutosh-AE/Logger.git
+   ```bash 
+   git clone https://github.com/Ashutosh-AE/Logger.git
 
    
 Open the Project in Android Studio:
