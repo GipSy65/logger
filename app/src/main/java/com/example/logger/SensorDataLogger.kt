@@ -20,6 +20,7 @@ import androidx.documentfile.provider.DocumentFile
 import java.io.File
 import java.io.FileWriter
 import java.text.SimpleDateFormat
+import com.example.logger.CanDataReader
 import java.util.*
 
 class SensorDataLogger(private val context: Context) : SensorEventListener, LocationListener {
@@ -45,6 +46,7 @@ class SensorDataLogger(private val context: Context) : SensorEventListener, Loca
     private var documentTreeUri: Uri? = null
 
     private val canDataReader = CanDataReader(context)
+
 
 
     private val updateHandler = Handler(Looper.getMainLooper())
@@ -158,6 +160,7 @@ class SensorDataLogger(private val context: Context) : SensorEventListener, Loca
             locationManager.removeUpdates(this)
             Log.d(TAG, "Location updates removed")
         } catch (e: Exception) {
+
             Log.e(TAG, "Error removing location updates", e)
         }
 
@@ -174,7 +177,9 @@ class SensorDataLogger(private val context: Context) : SensorEventListener, Loca
         return filePath
     }
     fun cleanup() {
-        canDataReader.cleanup()
+        stopLogging()
+            canDataReader.cleanup()
+
     }
 
 

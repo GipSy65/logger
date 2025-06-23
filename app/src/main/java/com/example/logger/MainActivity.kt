@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.Settings
 import android.util.Log
 import android.text.Editable
@@ -92,6 +93,15 @@ class MainActivity : ComponentActivity() {
         if (::sensorLogger.isInitialized) {
             sensorLogger.cleanup()
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume called")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -230,7 +240,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun pickCustomDirectory() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
             launchSafDirectoryPicker()
         } else {
             if (ContextCompat.checkSelfPermission(
@@ -250,6 +260,11 @@ class MainActivity : ComponentActivity() {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, "content://com.example.logger/root/")
+        }
+
         startActivityForResult(intent, CREATE_DOCUMENT_TREE_REQUEST_CODE)
     }
 
@@ -412,6 +427,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startLogging() {
+
         try {
             sensorDataText.value = ""
 
@@ -447,13 +463,11 @@ class MainActivity : ComponentActivity() {
             Location:
               Lat: ${data.location?.let { String.format("%.6f", it.latitude) } ?: "N/A"}
               Lng: ${data.location?.let { String.format("%.6f", it.longitude) } ?: "N/A"}
-              Alt: ${data.location?.let { String.format("%.1f m", it.altitude) } ?: "N/A"}
               
               CAN Data: ${data.canData ?: "Not connected"}
 
         """.trimIndent()
     }
-
     private fun stopLogging() {
         try {
             val filePath = sensorLogger.stopLogging()

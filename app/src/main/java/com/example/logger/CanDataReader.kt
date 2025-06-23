@@ -181,11 +181,30 @@ class CanDataReader(private val context: Context) {
     }
 
     fun cleanup() {
+        isConnected = false
+
         try {
             context.unregisterReceiver(usbReceiver)
-        } catch (ignored: IllegalArgumentException) {
+            Log.d(TAG, "USB receiver unregistered successfully")
+        } catch (e: IllegalArgumentException) {
+            Log.w(TAG, "USB receiver was not registered: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering USB receiver", e)
         }
-        disconnect()
-        executor.shutdown()
+
+        // Shutdown executor
+        try {
+            executor.shutdown()
+            if (!executor.awaitTermination(1, java.util.concurrent.TimeUnit.SECONDS)) {
+                executor.shutdownNow()
+            }
+            Log.d(TAG, "Executor shutdown successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error shutting down executor", e)
+            executor.shutdownNow()
+        }
+
+        canDataCallback = null
+
     }
 }
