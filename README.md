@@ -5,10 +5,10 @@ Logger is a mobile application developed in Kotlin that collects and logs sensor
 The collected data is saved in a CSV format for research and analysis purposes.
 
 ## Features
-- Collects yaw, pitch, and roll sensor data.
-- Captures device's current latitude, longitude, and altitude.
-- Records Vehicle CAN data.
-- Saves all collected data into a CSV file with timestamps.
+- Collects yaw, pitch, and roll sensor data with alighned IMU timestamp.
+- Captures device's current latitude, longitude.
+- Records Vehicle CAN data and update in the csv.
+- Saves all collected data into a CSV file.
 - Easy-to-use interface for starting/stopping data collection.
 
 ## Requirements
